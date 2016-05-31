@@ -1,6 +1,6 @@
 class Oystercard
 
-attr_reader :balance, :in_journey
+attr_reader :balance, :in_journey, :entry_station
 
 MAXIMUM_BALANCE = 90
 MINIMUM_FARE = 1
@@ -15,10 +15,10 @@ MINIMUM_FARE = 1
     @balance += money
   end
 
-  def touch_in
+  def touch_in(entry_station)
     fail 'Balance too low to enter' if low_balance
     @in_journey = true
-
+    @entry_station = entry_station
   end
 
   def touch_out
