@@ -35,4 +35,18 @@ describe Oystercard do
     end
   end
 
+  describe '#touch_in' do
+
+    it 'oystercard.in_journey = true after #touch_in' do
+      expect { oystercard.touch_in }.to change{ oystercard.in_journey}.to true
+    end
+  end
+
+  describe '#touch_out' do
+    it 'oystercard.in_journey = false after #touch_out' do
+      oystercard.touch_in
+      expect { oystercard.touch_out }.to change{ oystercard.in_journey}.to false
+    end
+  end
+
 end
