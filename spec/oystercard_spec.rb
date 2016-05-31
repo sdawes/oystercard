@@ -16,6 +16,10 @@ describe Oystercard do
       expect(oystercard.balance).to eq 0
     end
 
+    it "should have a jouney historu at initialization" do
+      expect(oystercard.journey_history).to eq []
+    end
+
   end
 
   describe '#top_up' do
