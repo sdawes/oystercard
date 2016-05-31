@@ -6,6 +6,7 @@ describe Oystercard do
   let(:maximum_balance) { Oystercard::MAXIMUM_BALANCE }
   let(:minimum_fare) { Oystercard::MINIMUM_FARE }
   let(:entry_station) { double :entry_station }
+  let(:exit_station) { double :exit_station }
 
   describe '#balance' do
 
@@ -44,24 +45,30 @@ describe Oystercard do
     it 'records entry station upon #touch in' do
       oystercard.top_up(minimum_fare)
       oystercard.touch_in(entry_station)
-      expect { oystercard.touch_in(entry_station).eq station}
+      expect(oystercard.touch_in(entry_station)).to eq entry_station
     end
 
 
 
   end
 
-  describe '#touch_out' do
-    it 'oystercard.in_journey = false after #touch_out' do
+  describe '#touch_out(exit_station)' do
+    it 'oystercard.in_journey = false after #touch_out(exit_station)' do
       oystercard.top_up(minimum_fare)
       oystercard.touch_in(entry_station)
-      expect { oystercard.touch_out }.to change{ oystercard.in_journey}.to false
+      expect { oystercard.touch_out(exit_station) }.to change{ oystercard.in_journey}.to false
     end
 
     it 'deducts minimum fare from balance on touch out' do
       oystercard.top_up(minimum_fare)
       oystercard.touch_in(entry_station)
-      expect { oystercard.touch_out }.to change{ oystercard.balance }.by -minimum_fare
+      expect { oystercard.touch_out(exit_station) }.to change{ oystercard.balance }.by -minimum_fare
+    end
+
+    it 'records #exit station upon #touch out' do
+      oystercard.top_up(minimum_fare)
+      oystercard.touch_in(entry_station)
+      expect(oystercard.touch_out(exit_station)).to eq exit_station
     end
 
   end
