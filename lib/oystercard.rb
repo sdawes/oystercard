@@ -15,10 +15,6 @@ MINIMUM_FARE = 1
     @balance += money
   end
 
-  def deduct(fare)
-    @balance -= fare
-  end
-
   def touch_in
     fail 'Balance too low to enter' if low_balance
     @in_journey = true
@@ -26,16 +22,21 @@ MINIMUM_FARE = 1
 
   def touch_out
     @in_journey = false
+    deduct
   end
 
-private
+  private
 
-def exceed(money)
-  money + balance > MAXIMUM_BALANCE
-end
+  def exceed(money)
+    money + balance > MAXIMUM_BALANCE
+  end
 
-def low_balance
-  balance < MINIMUM_FARE
-end
+  def low_balance
+    balance < MINIMUM_FARE
+  end
+
+  def deduct
+    @balance -= MINIMUM_FARE
+  end
 
 end

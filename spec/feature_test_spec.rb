@@ -5,9 +5,9 @@ describe "Feature Tests" do
     oystercard = Oystercard.new
     oystercard.top_up(20)
     Oystercard::MAXIMUM_BALANCE
-    oystercard.deduct(19)
     oystercard.touch_in
     oystercard.touch_out
+
 
 
 

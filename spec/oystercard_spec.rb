@@ -30,12 +30,6 @@ describe Oystercard do
 
   end
 
-  describe '#deduct' do
-    it 'should deduct specified amount from the balance' do
-      expect{ oystercard.deduct(3) }.to change{ oystercard.balance }.by(-3)
-    end
-  end
-
   describe '#touch_in' do
     it '#oystercard.balance >= minimum balance in order to touch_in' do
       expect { oystercard.touch_in }.to raise_error('Balance too low to enter')
@@ -54,6 +48,13 @@ describe Oystercard do
       oystercard.touch_in
       expect { oystercard.touch_out }.to change{ oystercard.in_journey}.to false
     end
+
+    it 'deducts minimum fare from balance on touch out' do
+      oystercard.top_up(minimum_fare)
+      oystercard.touch_in
+      expect { oystercard.touch_out }.to change{ oystercard.balance }.by -minimum_fare
+    end
+
   end
 
 end
