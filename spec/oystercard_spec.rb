@@ -29,4 +29,10 @@ describe Oystercard do
 
   end
 
+  describe '#deduct' do
+    it 'should deduct specified amount from the balance' do
+      expect{ oystercard.deduct(3) }.to change{ oystercard.balance }.by(-3)
+    end
+  end
+
 end

@@ -13,6 +13,10 @@ MAXIMUM_BALANCE = 90
     @balance += money
   end
 
+  def deduct(fare)
+    @balance -= fare
+  end
+
 private
 
 def exceed(money)
