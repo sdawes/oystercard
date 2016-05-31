@@ -18,6 +18,7 @@ MINIMUM_FARE = 1
   def touch_in
     fail 'Balance too low to enter' if low_balance
     @in_journey = true
+
   end
 
   def touch_out

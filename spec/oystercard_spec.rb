@@ -5,6 +5,7 @@ describe Oystercard do
   subject (:oystercard) { described_class.new }
   let(:maximum_balance) { Oystercard::MAXIMUM_BALANCE }
   let(:minimum_fare) { Oystercard::MINIMUM_FARE }
+  let(:station) {}
 
   describe '#balance' do
 
@@ -39,6 +40,9 @@ describe Oystercard do
       oystercard.top_up(minimum_fare)
       expect { oystercard.touch_in }.to change{ oystercard.in_journey}.to true
     end
+
+
+
 
   end
 

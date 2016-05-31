@@ -8,6 +8,8 @@ describe "Feature Tests" do
     oystercard.touch_in
     oystercard.touch_out
 
+    oystercard.touch_in(entry_station)
+
 
 
 
