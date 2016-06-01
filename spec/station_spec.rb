@@ -1,8 +1,8 @@
 require 'station'
 
 describe Station do
-	
- subject(:station) { described_class.new(:name, :zone) }
+
+ subject(:station) { Station.new(:name, :zone) }
 
 	it 'should have a name at initialization' do
 		expect(station.name).to eq :name
