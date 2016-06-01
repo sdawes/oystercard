@@ -1,52 +1,44 @@
 require 'journey'
-
 describe Journey do
-  let(:journey) { described_class.new(entry_station) }
-  let(:entry_station) { double :entry_station }
-  let(:exit_station) { double :exit_station }
+  let(:station) { double :station, zone: 1}
 
-  it 'initializes with an entry station' do
-    expect(journey.entry_station).to eq entry_station
+  it "knows if a journey is not complete" do
+    expect(subject).not_to be_complete
   end
 
-  describe '#finish' do
-    it 'records exit_station' do
-      journey.finish(exit_station)
-      expect(journey.exit_station).to eq exit_station
-    end
+  it 'has a penalty fare by default' do
+    expect(subject.fare).to eq Journey::PENALTY_FARE
   end
 
-  describe '#complete?' do
-
-    it 'knows if a journey is not complete' do
-      expect(journey.complete?).to eq false
-    end
-
-    it 'knows if a journey is complete' do
-      journey.finish(exit_station)
-      expect(journey.complete?).to eq true
-    end
-
+  it "returns itself when exiting a journey" do
+    expect(subject.finish(station)).to eq(subject)
   end
 
-  describe '#fare' do
-    it 'if journey completes calculates fare' do
-      journey.finish(exit_station)
-      expect(journey.fare).to eq 1
+  context 'given an entry station' do
+    subject {described_class.new(station)}
+
+    it 'has an entry station' do
+      expect(subject.entry_station).to eq station
     end
 
-    it 'journey is incomplete charge penalty' do
-      expect(journey.fare).to eq Journey::PENALTY
+    it "returns a penalty fare if no exit station given" do
+      expect(subject.fare).to eq Journey::PENALTY_FARE
+    end
+
+    context 'given an exit station' do
+      let(:other_station) { double :other_station }
+
+      before do
+        subject.finish(other_station)
+      end
+
+      it 'calculates a fare' do
+        expect(subject.fare).to eq 1
+      end
+
+      it "knows if a journey is complete" do
+        expect(subject).to be_complete
+      end
     end
   end
-
-
-
-
-
-
-
-
-
-
 end

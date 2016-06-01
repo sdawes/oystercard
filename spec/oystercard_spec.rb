@@ -29,71 +29,23 @@ describe Oystercard do
     end
   end
 
-  context '#in_journey?' do
-    it "returns false if not in journey" do
-      expect(card.in_journey?).to eq false
-    end
-  end
 
   context '#touch_in' do
-    it "changes #in_journey? to true" do
-      card.top_up(minimum_balance)
-      card.touch_in(entry_station)
-      expect(card).to be_in_journey
-    end
 
     it 'raises error if not enough balance' do
       expect{card.touch_in(entry_station)}.to raise_error 'Not enough balance!'
     end
 
-    it 'records an entry station' do
-      card.top_up(minimum_balance)
-      card.touch_in(entry_station)
-      expect(card.entry_station).to eq entry_station
-    end
-
   end
 
   context '#touch_out' do
-    it "change #in_journey? to false" do
-      card.top_up(minimum_balance)
-      card.touch_in(entry_station)
-      card.touch_out(exit_station)
-      expect(card).not_to be_in_journey
-    end
 
     it 'deducts balance by minimum charge' do
+      card.top_up(10)
+      card.touch_in(entry_station)
       expect {card.touch_out(exit_station)}.to change{card.balance}.by(-Oystercard::MIN_CHARGE)
     end
-
-    it 'changes the entry_station instance variable to nil' do
-      card.top_up(minimum_balance)
-      card.touch_in(entry_station)
-      card.touch_out(exit_station)
-      expect(card.entry_station).to be_nil
-    end
-
-    it 'stores exit station' do
-      card.top_up(minimum_balance)
-      card.touch_in(entry_station)
-      card.touch_out(exit_station)
-      expect(card.exit_station).to eq exit_station
-    end
   end
 
-  context '#journey_history' do
-    it 'starts with an empty array' do
-      expect(card.journey_history).to eq []
-    end
-
-    it 'records #journey_history' do
-      card.top_up(minimum_balance)
-      card.touch_in(entry_station)
-      card.touch_out(exit_station)
-      expect(card.journey_history).to include journey
-
-    end
-
-  end
 
 end
