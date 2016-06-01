@@ -28,6 +28,10 @@ MINIMUM_FARE = 1
     @exit_station = exit_station
   end
 
+  def in_journey?
+    @in_journey
+  end
+
   private
 
   def exceed(money)

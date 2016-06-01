@@ -7,6 +7,9 @@ describe Oystercard do
   let(:minimum_fare) { Oystercard::MINIMUM_FARE }
   let(:entry_station) { double :entry_station }
   let(:exit_station) { double :exit_station }
+  let(:journey) { {entry_station: entry_station, exit_station: exit_station} }
+
+
 
   describe '#balance' do
 
@@ -16,8 +19,8 @@ describe Oystercard do
       expect(oystercard.balance).to eq 0
     end
 
-    it "should have a jouney historu at initialization" do
-      expect(oystercard.journey_history).to eq []
+    it "should have a journey historu at initialization" do
+      expect(oystercard.journey_history).to be_empty
     end
 
   end
@@ -36,14 +39,19 @@ describe Oystercard do
 
   end
 
-  describe '#touch_in(entry_station)' do
+  describe '#touch_in' do
     it '#oystercard.balance >= minimum balance in order to touch_in' do
       expect { oystercard.touch_in(entry_station) }.to raise_error('Balance too low to enter')
     end
 
-    it 'oystercard.in_journey = true after #touch_in' do
+    it 'is initially not in a journey' do
+      expect(oystercard.in_journey).to eq false
+    end
+
+    it 'can touch in' do
       oystercard.top_up(minimum_fare)
-      expect { oystercard.touch_in(entry_station) }.to change{ oystercard.in_journey}.to true
+      oystercard.touch_in(entry_station)
+      expect(oystercard).to be_in_journey
     end
 
     it 'records entry station upon #touch in' do
