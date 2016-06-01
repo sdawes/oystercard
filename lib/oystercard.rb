@@ -1,7 +1,8 @@
+require_relative 'journey'
 
 class Oystercard
 
-  attr_reader :balance, :entry_station,:exit_station, :journey_history
+  attr_reader :balance, :entry_station, :exit_station, :journey_history
 
   def initialize
     @balance = 0
