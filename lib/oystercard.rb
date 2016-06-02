@@ -1,56 +1,45 @@
-require_relative 'journey'
-require_relative 'station'
+require_relative 'journey_log'
 
 class Oystercard
 
-  attr_reader :balance, :journey
+  DEFAULT_LIMIT = 90
+  MIN_BALANCE = 1
+
+  attr_reader :journey, :balance, :journey_log
 
   def initialize
     @balance = 0
-    @journey = Journey.new
+    @journey_log = JourneyLog.new
   end
 
   def top_up(value)
-    top_up_fail(value)
+    fail 'Exceeded limit' if balance + value > DEFAULT_LIMIT
     @balance += value
   end
 
-  def touch_in(entry_station)
-    fail 'Not enough balance!' if balance < MIN_BALANCE
-    @journey = Journey.new(entry_station)
+  def touch_in(start_station)
+    finish_journey if in_journey?
+    fail 'Not enough balance!' if @balance < MIN_BALANCE
+    @journey_log.start(start_station)
   end
 
   def touch_out(exit_station)
-    @journey.finish(exit_station)
-    deduct(@journey.fare)
-    # @journey = Journey.new
+    @journey_log.finish(exit_station)
+    deduct
   end
 
-  private
 
-  DEFAULT_LIMIT = 90
-  MIN_BALANCE = 1
-  MIN_CHARGE = 1
-
-  def deduct(value)
-    fail "Please input an integer" unless is_number?(value)
-    @balance -= value
+  def deduct
+    @balance -= journey_log.journey_history.last.fare
   end
 
-  def top_up_fail(value)
-    integer_error(value)
-    fail 'Exceeded limit' if limit?(value)
+  def finish_journey
+    @journey_log.finish(:Incomplete)
+    deduct
   end
 
-  def integer_error(value)
-    fail "Please input an integer" unless is_number?(value)
+  def in_journey?
+    journey_log.in_journey?
   end
 
-  def limit?(value)
-    (@balance + value ) > DEFAULT_LIMIT
-  end
-
-  def is_number?(value)
-    value.is_a? Integer
-  end
 end

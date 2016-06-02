@@ -8,16 +8,8 @@ describe Oystercard do
   let(:minimum_balance) { Oystercard::MIN_BALANCE }
   let(:journey) { {entry_station: entry_station, exit_station: exit_station} }
 
-  context 'responses' do
-    it { is_expected.to respond_to(:top_up).with(1).argument }
-    it { is_expected.to respond_to(:touch_in).with(1).argument }
-  end
 
   context '#top_up' do
-
-    it 'raises an error when a string is input' do
-      expect{card.top_up("foo")}.to raise_error("Please input an integer")
-    end
 
     it 'allows money to be added to reach limit' do
       expect{card.top_up(maximum_balance)}.not_to raise_error
@@ -25,7 +17,7 @@ describe Oystercard do
 
     it 'raises an error when exceeding limit of 90' do
       card.top_up(maximum_balance)
-      expect{card.top_up(1)}.to raise_error("Exceeded limit")
+      expect{card.top_up(minimum_balance)}.to raise_error("Exceeded limit")
     end
   end
 

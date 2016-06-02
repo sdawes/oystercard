@@ -3,15 +3,11 @@ require 'journey'
 describe Journey do
 
   subject(:journey) { Journey.new(entry_station) }
-  let(:entry_station) { double :entry_station, zone: 1}
+  let(:start_station) { double :start_station, zone: 1}
   let(:exit_station) { double :exit_station, zone: 1}
 
   it 'confirms that journey is NOT complete' do
     expect(journey.complete?).to eq false
-  end
-
-  it 'has a penalty fare by default' do
-    expect(journey.fare).to eq Journey::PENALTY_FARE
   end
 
   it 'returns itself when exiting a journey' do
